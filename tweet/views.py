@@ -143,3 +143,35 @@ class LikesListView(ListAPIView):
             tweet_id=self.kwargs.get("tweet_id")
         ).order_by("-creation_datetime")
 
+
+class RetweetView(APIView):
+    """
+    Controller to do a retweet
+    """
+
+    def post(self, request: Request, tweet_id: int):
+        retweet_tweet = get_object_or_404(models.Tweet, id=tweet_id)
+
+        tweet_serializer = serializers.TweetSerializer(data=request.data)
+
+        if tweet_serializer.is_valid():
+            tweet_serializer.save(author=request.user, retweet=retweet_tweet)
+            retweet_tweet.retweet_count += 1
+            retweet_tweet.save()
+
+            return Response(tweet_serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(tweet_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetRetweetsListView(ListAPIView):
+    """
+    Controller for listing all the retweets for a particular tweet with pagination, default pagination is 20.
+    """
+
+    serializer_class = serializers.TweetSerializer
+
+    def get_queryset(self):
+        return models.Tweet.objects.filter(
+            retweet_id=self.kwargs.get("tweet_id")
+        ).order_by("-creation_datetime")

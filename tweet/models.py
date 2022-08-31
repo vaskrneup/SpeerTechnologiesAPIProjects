@@ -34,11 +34,13 @@ class Tweet(models.Model):
 
     like_count = models.BigIntegerField(
         verbose_name=_("Like Count"),
-        help_text=_("Keeps track for number of likes made to the tweet.")
+        help_text=_("Keeps track for number of likes made to the tweet."),
+        default=0,
     )
     retweet_count = models.BigIntegerField(
         verbose_name=_("Retweet Count"),
-        help_text=_("Keeps track of how many retweets had been made.")
+        help_text=_("Keeps track of how many retweets had been made."),
+        default=0,
     )
 
     retweet = models.ForeignKey(
