@@ -79,6 +79,12 @@ class Like(models.Model):
     Keeps track of tweet liked by the user.
     """
 
+    creation_datetime = models.DateTimeField(
+        verbose_name=_("Creation Date"),
+        help_text=_("Date posted"),
+        auto_now_add=True
+    )
+
     author = models.ForeignKey(
         verbose_name=_("Liked By"),
         to=get_user_model(),
@@ -97,6 +103,12 @@ class Retweet(models.Model):
     """
     Keeps track of retweet done by the user.
     """
+
+    creation_datetime = models.DateTimeField(
+        verbose_name=_("Creation Date"),
+        help_text=_("Date posted"),
+        auto_now_add=True
+    )
 
     author = models.ForeignKey(
         verbose_name=_("Retweeted By"),

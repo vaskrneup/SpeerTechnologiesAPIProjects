@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from user.serializer import UserSerializer
 from tweet import models
 
 
@@ -11,8 +12,14 @@ class TweetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Tweet
-        fields = ("id", "author", "author_username", "creation_datetime", "update_datetime", "tweet")
-        read_only_fields = ("id", "author", "author_username", "creation_datetime", "update_datetime")
+        fields = (
+            "id", "author", "like_count", "retweet_count", "author_username",
+            "creation_datetime", "update_datetime", "tweet"
+        )
+        read_only_fields = (
+            "id", "author", "like_count", "retweet_count", "author_username",
+            "creation_datetime", "update_datetime"
+        )
 
 
 class TweetListViewSerializer(serializers.ModelSerializer):
@@ -24,8 +31,14 @@ class TweetListViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Tweet
-        fields = ("id", "author", "author_username", "creation_datetime", "update_datetime", "tweet")
-        read_only_fields = ("id", "author", "author_username", "creation_datetime", "update_datetime", "tweet")
+        fields = (
+            "id", "author", "like_count", "retweet_count", "author_username",
+            "creation_datetime", "update_datetime", "tweet"
+        )
+        read_only_fields = (
+            "id", "author", "like_count", "retweet_count", "author_username",
+            "creation_datetime", "update_datetime", "tweet"
+        )
 
 
 class TweetUpdateRequestParametersSerializer(serializers.Serializer):
@@ -44,3 +57,11 @@ class TweetUpdateRequestParametersSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         pass
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
+
+    class Meta:
+        model = models.Like
+        fields = ("creation_datetime", "tweet_id", "author")

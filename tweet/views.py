@@ -34,6 +34,7 @@ class TweetsListView(ListAPIView):
     """
     Controller for listing all the tweets with pagination, default pagination is 20.
     """
+
     queryset = models.Tweet.objects.all()
     serializer_class = serializers.TweetListViewSerializer
 
@@ -99,3 +100,46 @@ class TweetUpdateView(APIView):
             serializers.TweetSerializer(instance=tweet).data,
             status=status.HTTP_200_OK
         )
+
+
+class LikeUnlikeTweetView(APIView):
+    """
+    Controller to create a new tweet.
+    """
+
+    def post(self, request: Request, tweet_id: int):
+        """
+        like tweet, if not already liked else, unlike the tweet.
+
+        :param request: Data gained from client.
+        :param tweet_id: ID of the tweet to update likes on.
+        :return: updated tweet.
+        """
+
+        tweet = get_object_or_404(models.Tweet, id=tweet_id)
+
+        if like := models.Like.objects.filter(tweet_id=tweet_id, author_id=request.user.id).first():
+            like.delete()
+            tweet.like_count -= 1
+        else:
+            models.Like(tweet_id=tweet_id, author=request.user).save()
+            tweet.like_count += 1
+
+        tweet.save()
+        tweet_serializer = serializers.TweetSerializer(instance=tweet)
+
+        return Response(tweet_serializer.data, status=status.HTTP_200_OK)
+
+
+class LikesListView(ListAPIView):
+    """
+    Controller for listing all the likes with pagination, default pagination is 20.
+    """
+
+    serializer_class = serializers.LikeSerializer
+
+    def get_queryset(self):
+        return models.Like.objects.filter(
+            tweet_id=self.kwargs.get("tweet_id")
+        ).order_by("-creation_datetime")
+
