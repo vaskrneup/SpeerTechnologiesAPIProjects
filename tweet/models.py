@@ -34,7 +34,11 @@ class Tweet(models.Model):
 
     @property
     def striped_tweet(self):
-        return self.tweet[:30]
+        """
+        Simply returns the first 30 characters of the tweet.
+        """
+
+        return f"{self.tweet[:30]}..." if len(self.tweet) > 30 else self.tweet
 
     def __str__(self):
         return self.striped_tweet
