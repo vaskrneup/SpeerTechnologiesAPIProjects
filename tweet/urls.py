@@ -1,4 +1,5 @@
 from django.urls import path
+
 from tweet import views
 
 app_name = "tweet"

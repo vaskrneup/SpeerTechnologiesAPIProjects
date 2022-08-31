@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from user.serializer import UserSerializer
+
 from tweet import models
+from user.serializer import UserSerializer
 
 
 class TweetSerializer(serializers.ModelSerializer):
