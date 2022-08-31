@@ -1,0 +1,13 @@
+# ide
+.idea
+
+# database
+migrations
+*.sqlite3
+
+# conflicing files
+*.pyc
+__pycache__
+
+# security
+.env
