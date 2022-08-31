@@ -42,6 +42,11 @@ class Tweet(models.Model):
         help_text=_("Keeps track of how many retweets had been made."),
         default=0,
     )
+    thread_count = models.BigIntegerField(
+        verbose_name=_("Thread Count"),
+        help_text=_("Keeps track of how many post had been made in threads."),
+        default=0,
+    )
 
     retweet = models.ForeignKey(
         verbose_name=_("Retweet"),

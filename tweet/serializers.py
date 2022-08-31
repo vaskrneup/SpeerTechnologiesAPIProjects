@@ -14,11 +14,11 @@ class TweetSerializer(serializers.ModelSerializer):
         model = models.Tweet
         fields = (
             "id", "author", "like_count", "retweet_count", "author_username",
-            "creation_datetime", "update_datetime", "tweet", "retweet_id"
+            "creation_datetime", "update_datetime", "tweet", "retweet_id", "thread_id",
         )
         read_only_fields = (
             "id", "author", "like_count", "retweet_count", "author_username",
-            "creation_datetime", "update_datetime", "retweet_id"
+            "creation_datetime", "update_datetime", "retweet_id", "thread_id",
         )
 
 
@@ -33,11 +33,11 @@ class TweetListViewSerializer(serializers.ModelSerializer):
         model = models.Tweet
         fields = (
             "id", "author", "like_count", "retweet_count", "author_username",
-            "creation_datetime", "update_datetime", "tweet", "retweet"
+            "creation_datetime", "update_datetime", "tweet", "retweet_id", "thread_id",
         )
         read_only_fields = (
             "id", "author", "like_count", "retweet_count", "author_username",
-            "creation_datetime", "update_datetime", "tweet", "retweet"
+            "creation_datetime", "update_datetime", "tweet", "retweet_id", "thread_id",
         )
 
 

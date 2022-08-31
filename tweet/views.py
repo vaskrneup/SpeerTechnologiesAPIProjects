@@ -217,8 +217,58 @@ class DeleteTweetView(APIView):
 
         if tweet.retweet:
             tweet.retweet.retweet_count -= 1
+        if tweet.thread:
+            tweet.retweet.thread_count -= 1
+        if tweet.retweet or tweet.thread:
             tweet.retweet.save()
 
         tweet.delete()
 
         return Response(serializers.TweetSerializer(instance=tweet).data, status=status.HTTP_200_OK)
+
+
+class CreateThreadView(APIView):
+    """
+    Controller to create a thread.
+    """
+
+    def post(self, request: Request, tweet_id: int):
+        """
+        Creates a new post as a thread and binds it to the original post.
+
+        :param request: Data gained from client.
+        :param tweet_id: ID of the tweet to bind thread to.
+        :return: new thread
+        """
+
+        thread_tweet = get_object_or_404(models.Tweet, id=tweet_id)
+
+        tweet_serializer = serializers.TweetSerializer(data=request.data)
+
+        if tweet_serializer.is_valid():
+            tweet_serializer.save(author=request.user, thread=thread_tweet)
+            thread_tweet.thread_count += 1
+            thread_tweet.save()
+
+            return Response(tweet_serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(tweet_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetThreadsView(ListAPIView):
+    """
+    Controller for listing all the threads for a particular tweet with pagination, default pagination is 20.
+    """
+
+    serializer_class = serializers.TweetSerializer
+
+    def get_queryset(self):
+        """
+         returns query, through which the List Data is created
+
+         :return: Django Query
+         """
+
+        return models.Tweet.objects.filter(
+            thread_id=self.kwargs.get("tweet_id")
+        ).order_by("-creation_datetime")

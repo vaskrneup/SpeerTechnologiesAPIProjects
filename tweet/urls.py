@@ -14,4 +14,6 @@ urlpatterns = [
     path("retweet/<int:tweet_id>/", views.RetweetView.as_view(), name="RetweetView"),
     path("retweets/<int:tweet_id>/", views.GetRetweetsListView.as_view(), name="GetRetweetsListView"),
     path("delete/<int:tweet_id>/", views.DeleteTweetView.as_view(), name="DeleteTweetView"),
+    path("create-thread/<int:tweet_id>/", views.CreateThreadView.as_view(), name="CreateThreadView"),
+    path("threads/<int:tweet_id>/", views.CreateThreadView.as_view(), name="CreateThreadView"),
 ]
