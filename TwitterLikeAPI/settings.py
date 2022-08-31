@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # Custom Applications
     "user.apps.UserConfig",
+    "tweet.apps.TweetConfig",
 ]
 
 MIDDLEWARE = [
