@@ -32,6 +32,36 @@ class Tweet(models.Model):
         help_text=_("Main content of the tweet"),
     )
 
+    like_count = models.BigIntegerField(
+        verbose_name=_("Like Count"),
+        help_text=_("Keeps track for number of likes made to the tweet.")
+    )
+    retweet_count = models.BigIntegerField(
+        verbose_name=_("Retweet Count"),
+        help_text=_("Keeps track of how many retweets had been made.")
+    )
+
+    retweet = models.ForeignKey(
+        verbose_name=_("Retweet"),
+        to="tweet.Tweet",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        default=None,
+        help_text=_("Determines if this tweet is a repost."),
+        related_name="tweet_retweet",
+    )
+    thread = models.ForeignKey(
+        verbose_name=_("Thread"),
+        to="tweet.Tweet",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        default=None,
+        help_text=_("Determines if this tweet is a part of a thread."),
+        related_name="tweet_thread",
+    )
+
     @property
     def striped_tweet(self):
         """
@@ -42,3 +72,42 @@ class Tweet(models.Model):
 
     def __str__(self):
         return self.striped_tweet
+
+
+class Like(models.Model):
+    """
+    Keeps track of tweet liked by the user.
+    """
+
+    author = models.ForeignKey(
+        verbose_name=_("Liked By"),
+        to=get_user_model(),
+        on_delete=models.CASCADE,
+        help_text=_("Liker of a tweet")
+    )
+    tweet = models.ForeignKey(
+        verbose_name=_("Liked Tweet"),
+        to=Tweet,
+        on_delete=models.CASCADE,
+        help_text=_("Tweet that was liked")
+    )
+
+
+class Retweet(models.Model):
+    """
+    Keeps track of retweet done by the user.
+    """
+
+    author = models.ForeignKey(
+        verbose_name=_("Retweeted By"),
+        to=get_user_model(),
+        on_delete=models.CASCADE,
+        help_text=_("One who retweeted")
+    )
+    tweet = models.ForeignKey(
+        verbose_name=_("Retweeted Tweet"),
+        to=Tweet,
+        on_delete=models.CASCADE,
+        help_text=_("The tweet that was retweeted"),
+        related_name="retweet_tweet"
+    )
