@@ -139,6 +139,12 @@ class LikesListView(ListAPIView):
     serializer_class = serializers.LikeSerializer
 
     def get_queryset(self):
+        """
+        returns query, through which the List Data is created
+
+        :return: Django Query
+        """
+
         return models.Like.objects.filter(
             tweet_id=self.kwargs.get("tweet_id")
         ).order_by("-creation_datetime")
@@ -150,6 +156,14 @@ class RetweetView(APIView):
     """
 
     def post(self, request: Request, tweet_id: int):
+        """
+        Creates a retweet and binds it to the original post.
+
+        :param request: Data gained from client.
+        :param tweet_id: ID of the tweet to bind retweet to.
+        :return: new retweet
+        """
+
         retweet_tweet = get_object_or_404(models.Tweet, id=tweet_id)
 
         tweet_serializer = serializers.TweetSerializer(data=request.data)
@@ -172,6 +186,39 @@ class GetRetweetsListView(ListAPIView):
     serializer_class = serializers.TweetSerializer
 
     def get_queryset(self):
+        """
+         returns query, through which the List Data is created
+
+         :return: Django Query
+         """
+
         return models.Tweet.objects.filter(
             retweet_id=self.kwargs.get("tweet_id")
         ).order_by("-creation_datetime")
+
+
+class DeleteTweetView(APIView):
+    """
+    Deletes the tweet with given id.
+    """
+
+    def delete(self, request: Request, tweet_id: int):
+        """
+        Deletes the given tweet or retweet.
+        In case of tweet, all its retweet too will be deleted.
+        In case of retweet, the retweet count on the first one will be deleted.
+
+        :param request: Data gained from client.
+        :param tweet_id: Tweet to be deleted.
+        :return: deleted tweet
+        """
+
+        tweet = get_object_or_404(models.Tweet, id=tweet_id)
+
+        if tweet.retweet:
+            tweet.retweet.retweet_count -= 1
+            tweet.retweet.save()
+
+        tweet.delete()
+
+        return Response(serializers.TweetSerializer(instance=tweet).data, status=status.HTTP_200_OK)
