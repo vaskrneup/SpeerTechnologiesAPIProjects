@@ -1,9 +1,9 @@
 from django.db.models import Sum, F, FloatField
 from rest_framework import status
 from rest_framework.generics import ListAPIView, get_object_or_404
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.request import Request
 
 from share_manager import models
 from share_manager import serializer

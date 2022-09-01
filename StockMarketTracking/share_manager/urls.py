@@ -1,4 +1,5 @@
 from django.urls import path
+
 from share_manager import views
 
 app_name = "share_manager"
