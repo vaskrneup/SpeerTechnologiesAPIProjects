@@ -46,7 +46,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         from wallet.models import Wallet
 
         resp = super(User, self).save(*args, **kwargs)
-        Wallet(user_id=self.id).save()  # create wallet for each user
+
+        if not hasattr(self, "wallet"):  # if the user doesn't have a wallet
+            Wallet(user_id=self.id).save()  # create wallet for user
+
         return resp
 
     def __str__(self):
