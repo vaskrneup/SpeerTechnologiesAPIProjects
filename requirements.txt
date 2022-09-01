@@ -1,11 +1,8 @@
-asgiref
-certifi
-Django
+asgiref==3.5.0
+certifi==2020.6.20
+Django==4.0.4
 djangorestframework==3.13.1
-djangorestframework-simplejwt==5.2.0
-PyJWT==2.4.0
-pytz==2022.2.1
-sqlparse
-tzdata
+djangorestframework-simplejwt==5.1.0
+tzdata==2022.1
 wincertstore==0.2
-docutils
+docutils==0.18.1
