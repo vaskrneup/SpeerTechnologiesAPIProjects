@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # Custom Applications
     "user.apps.UserConfig",
     "wallet.apps.WalletConfig",
+    "share_manager.apps.ShareManagerConfig",
 ]
 
 MIDDLEWARE = [

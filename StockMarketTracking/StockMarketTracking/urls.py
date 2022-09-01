@@ -20,5 +20,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api-auth/", include("rest_framework.urls")),
     path("user/", include("user.urls", namespace="user")),
-    path("wallet/", include('wallet.urls', namespace="wallet"))
+    path("wallet/", include('wallet.urls', namespace="wallet")),
+    path("share/", include('share_manager.urls', namespace="share_manager")),
 ]
