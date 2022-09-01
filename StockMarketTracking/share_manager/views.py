@@ -62,6 +62,10 @@ class GetPortfolio(ListAPIView):
 
 
 class TradeShare(APIView):
+    """
+    Allows for the trading of scrips. Either Buy or Sell.
+    """
+
     @staticmethod
     def _handle_scrip_buy(request: Request, scrip: models.Share, scrip_count: int):
         """
