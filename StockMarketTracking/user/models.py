@@ -42,5 +42,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
+    def save(self, *args, **kwargs):
+        from wallet.models import Wallet
+
+        resp = super(User, self).save(*args, **kwargs)
+        Wallet(user_id=self.id).save()  # create wallet for each user
+        return resp
+
     def __str__(self):
         return self.username

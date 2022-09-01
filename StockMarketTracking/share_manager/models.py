@@ -18,7 +18,9 @@ class Share(models.Model):
     stock_scrip = models.CharField(
         verbose_name=_("Stock Scrip"),
         max_length=16,
-        help_text=_("Symbol of the stock")
+        help_text=_("Symbol of the stock"),
+        unique=True,
+        primary_key=True,
     )
     current_price = models.FloatField(
         verbose_name=_("Current Price"),
