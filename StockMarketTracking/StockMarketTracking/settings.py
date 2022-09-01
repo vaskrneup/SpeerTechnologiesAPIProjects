@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # Custom Applications
     "user.apps.UserConfig",
+    "wallet.apps.WalletConfig",
 ]
 
 MIDDLEWARE = [
