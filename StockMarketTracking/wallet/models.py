@@ -48,4 +48,4 @@ class Wallet(models.Model):
         return self.balance
 
     def __str__(self):
-        return self.balance
+        return str(self.balance)
